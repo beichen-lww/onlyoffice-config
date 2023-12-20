@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>onlyoffice 基本配置</title>
+</head>
+
+<script type="text/javascript" src="http://xxxx:9090/web-apps/apps/api/documents/api.js"></script>
+<script type="text/javascript" src="./spell.js"></script>
+
+<body>
+    <div id="placeholder"></div>
+    <script>
+        //  token 生成就是 以下  editorConfig 配置
+        let token = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xNzIuMjAuMi4xOjgwOTBcLyIsInN1YiI6Im9ubHlvZmZpY2UiLCJzdWJfZW1haWwiOiJ1c2VyMTIzQGVtYWlsLmNvbSIsInN1Yl9uYW1lIjoiSm9obiBEb2UiLCJqdGkiOiIxNDcxOTcwNzYzIiwiZXhwIjoiMTYyMTc4NDc5NCIsImRvYyI6eyJmaWxlVHlwZSI6ImRvY3giLCJrZXkiOiJmaWxlX2tleSIsInRpdGxlIjoiRG9jdW1lbnQgTmFtZSIsInVybCI6Imh0dHA6XC9cLzE3Mi4yMC4yLjE6ODA5MFwvIn19.AEYGviJDPJ9mioGAeZjjcMiq8Tz8SQ3GCRHeJQQn8mU`
+        let width = screen.width
+        let height = screen.height
+
+
+        // 编辑器配置项，完整配置项参见：https://api.onlyoffice.com/editors/config/
+        const editorConfig = {
+            // 编辑器宽度，也可以设置成百分比，不过要父容器设定具体宽度
+            width: width,
+            // 编辑器高度
+            height: height,
+            // 编辑器类型，支持 word、cell（表格）、slide（PPT）
+            documentType: 'word',
+            // 文档配置
+            document: {
+                // 当前文档类型
+                fileType: 'docx',
+                // 文档标识符
+                key: "123456",
+                // 文档地址，绝对路径
+                url: 'http://xxxx:9090',
+                // 文档标题
+                title: '测试1.docx',
+                // 权限，每个要打开的文档都可以设置独立的权限
+                permissions: {
+                    // 启用评论
+                    comment: false,
+                    // 启用下载
+                    download: true,
+                    // 启用编辑
+                    edit: true,
+                    // 启用导出
+                    print: true,
+                    // 启用预览
+                    review: true
+                }
+            },
+            editorConfig: {
+                token: token,
+                // 回调地址
+                callbackUrl: 'http://IP/api/v1/onlyoffice/callback',
+                // 设置语言
+                lang: 'zh-CN',
+                // 添加用户信息
+                user: {
+                    group: '技术部', id: 'wytxer', name: '程序员未央'
+                },
+                // 模板列表
+                templates: [],
+                // customization 字段相关配置详解：https://api.onlyoffice.com/editors/config/editor/customization
+                customization: {
+                    // 强制保存
+                    forcesave: true,
+                    features: {
+                        // 关闭拼写检查
+                        spellcheck: false
+                    }
+                }
+            }
+        }
+        try {
+            var docEditor = new DocsAPI.DocEditor("placeholder", editorConfig);
+        } catch (error) {
+            alert(`服务器报错:http://xxxx:8090/web-apps/apps/api/documents/api.js
+             状态：500
+            `)
+        }
+
+    </script>
+</body>
+
+</html>
